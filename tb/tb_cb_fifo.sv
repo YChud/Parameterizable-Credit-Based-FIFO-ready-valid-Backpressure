@@ -1,29 +1,35 @@
 //I built the TB with the assumption that all tests can be run back to back to I put reset in between certain tests that need to be reset before
 
 module testbench;
+
+  parameter int DATA_W   = 32;
+  parameter int DEPTH    = 8;
+  parameter bit PIPE_OUT = 0;
+  parameter bit SKID_EN  = 0;
+	
   logic clk = 0;
   logic rst_n;
 
   logic s_valid;
   logic s_ready;
-  logic [31:0] s_data;
+  logic [DATA_W-1:0] s_data;
 
   logic m_valid;
   logic m_ready;
-  logic [31:0] m_data;
+  logic [DATA_W-1:0] m_data;
 
-  logic [$clog2(8+1)-1:0] level;
+  logic [$clog2(DEPTH+1)-1:0] level;
   logic empty, full;
-  logic [$clog2(8+1)-1:0] credits;
+  logic [$clog2(DEPTH+1)-1:0] credits;
 
-  logic [31:0] popped_word; 
-  logic [31:0] pushed_word;
+  logic [DATA_W-1:0] popped_word; 
+  logic [DATA_W-1:0] pushed_word;
   
-  logic [31:0] exp_q[$];
-  logic [31:0] exp;
+  logic [DATA_W-1:0] exp_q[$];
+  logic [DATA_W-1:0] exp;
   
   logic push_evt, pop_evt;
-  logic [31:0] pop_data;
+  logic [DATA_W-1:0] pop_data;
   
   //Logic for Coverage
   logic pop, push;
@@ -62,7 +68,7 @@ module testbench;
 
   
   
-  fifo #(.Data_W(32), .DEPTH(8), .PIPE_OUT(0), .SKID_EN(0)) dut (
+	fifo #(.Data_W(DATA_W), .DEPTH(DEPTH), .PIPE_OUT(PIPE_OUT), .SKID_EN(SKID_EN)) dut (
     .clk(clk), .rst_n(rst_n),
     .s_valid(s_valid), .s_ready(s_ready), .s_data(s_data),
     .m_valid(m_valid), .m_ready(m_ready), .m_data(m_data),
@@ -99,7 +105,7 @@ module testbench;
     $display("ONE PUSH");
     //Setting the Source to be ready to send data with a data value given
   	s_data  = 32'hA5A5_0001;
-	  s_valid = 1;
+	s_valid = 1;
     
     #1;
     print_status("Before posedge");
@@ -111,7 +117,7 @@ module testbench;
 	  print_status("after push handshake");
     
     //Set values back to 0 to make sure no new data gets through
-	  s_valid = 1'b0;
+	s_valid = 1'b0;
     s_data = '0;
     
     @(posedge clk);
@@ -139,7 +145,7 @@ module testbench;
     
 //Test Fill    
     $display("TEST FILL");
-    for (int i = 0; i < 9; i++) begin
+	  for (int i = 0; i < DEPTH+1; i++) begin
       s_data=32'hA5A5_0000 + i;
       s_valid=1;
       
@@ -159,7 +165,7 @@ module testbench;
 
 //Test empty
     $display("TEST EMPTY");
-    for (int j =0; j<8; j++) begin
+	  for (int j =0; j<DEPTH; j++) begin
       //We turn the sink on
       m_ready=1'b1;
       
@@ -183,8 +189,8 @@ module testbench;
     
 //Test simultanous Push and Pop
     $display("Simultanous Push and POP");
-    //Load up a bit of the FIFO
-    for (int k = 0; k<6; k++) begin
+	  //Load up a bit of the FIFO (We choose DEPTH-2 for the example)
+	  for (int k = 0; k<DEPTH-2; k++) begin
       s_data=32'hA5A5_1000 + k;
       s_valid=1'b1;
       
