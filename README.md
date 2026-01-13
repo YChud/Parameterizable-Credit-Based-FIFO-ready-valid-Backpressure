@@ -104,6 +104,7 @@ Verification is fully self-checking and includes:
   - Occupancy bounds and correctness
 
 
+
 ## Waveforms
 
 Waveform screenshots are included to illustrate key behaviors.
@@ -141,5 +142,12 @@ This waveform is taken from a randomized stress test consisting of
 Despite arbitrary backpressure and bursty traffic, data ordering is
 preserved, no overflow or underflow occurs, and all assertions remain
 satisfied.
+
+
+
+## How to Run
+
+Simulation was developed using EDA Playground and verified with
+Icarus Verilog–compatible SystemVerilog.
 
 
