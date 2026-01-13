@@ -105,10 +105,10 @@ module fifo #(
       //Assertions:
       // 1) No overflow: if full, must not be ready
       assert (!(full && push && !pop)) //this can't happen
-        else $fatal(1, "FIFO overflow: full=1 but accepted push");
+      else $fatal(1, "FIFO overflow: full=1 but accepted push");
 
       // 2) No underflow: if empty, must not be valid
-      assert (!(empty && !PIPE_OUT && core_valid))
+	  assert (!(empty && pop))
       else $fatal(1, "FIFO underflow: empty=1 but core_valid=1");
       
       // 3) Data saves when there is backpressure
