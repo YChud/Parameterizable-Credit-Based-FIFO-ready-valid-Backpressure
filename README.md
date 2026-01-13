@@ -1,6 +1,6 @@
 # Parameterizable-Credit-Based-FIFO-ready-valid-Backpressure
 
-This project implements a **parameterizable streaming FIFO** using a
+This project implements a parameterizable streaming FIFO using a
 ready/valid handshake protocol with full backpressure support.
 The design is intended to model a production-style hardware block,
 emphasizing correctness, configurability, and verification discipline.
