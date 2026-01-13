@@ -109,7 +109,7 @@ Verification is fully self-checking and includes:
 Waveform screenshots are included to illustrate key behaviors.
 
 ### Reset Behavior
-![Reset](docs/waveform_reset.png)
+![Reset](docs/waveform_reset.JPG)
 
 After several successful push operations, reset (`rst_n`) is asserted
 mid-operation. All internal state is flushed: `level` returns to zero,
@@ -118,7 +118,7 @@ release, the FIFO remains in a clean empty state with
 no residual data, confirming correct reset behavior.
 
 ### Full / Empty Behavior
-![Full Empty](docs/waveform_empty_(after_fill).png)
+![Full Empty](docs/waveform_empty_(after_fill).JPG)
 
 The FIFO is filled until `level` reaches `DEPTH`, at which point `full`
 asserts and `s_ready` deasserts, preventing further pushes. As the sink
@@ -126,7 +126,7 @@ begins asserting `m_ready`, data is popped in-order, `level` decrements,
 and `empty` asserts when the FIFO is fully drained.
 
 ### Backpressure Stall
-![Backpressure](docs/waveform_backpressure.png)
+![Backpressure](docs/waveform_backpressure.JPG)
 
 During this interval, `m_ready` is deasserted while `m_valid` remains
 asserted. The output data (`m_data`) remains stable throughout the
@@ -134,7 +134,7 @@ stall, demonstrating correct ready/valid protocol behavior under
 backpressure.
 
 ### Randomized Stress Test
-![Random Stress](docs/waveform_random_stress.png)
+![Random Stress](docs/waveform_random_stress.JPG)
 
 This waveform is taken from a randomized stress test consisting of
 1,500 cycles of randomized `s_valid`, `m_ready`, and input data.
